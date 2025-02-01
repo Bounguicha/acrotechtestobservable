@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { DataService } from '../core/services/data.service';
-import { Subject, takeUntil } from 'rxjs';
+import {merge, Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-clickable-box',
@@ -56,25 +56,38 @@ export class ClickableBoxComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Subscribes to the box updates and the selected box index observable from the data service.
-   * Updates the `value`, `key`, and `selectedIndex` as new data or changes are emitted.
+   * Subscribes to updates from the data service related to a specific box
+   * and the currently selected box index. Merges these updates into a single stream
+   * and handles them accordingly.
    */
-  private subscribeToBoxUpdates(): void {
-    this.dataService
-      .getBoxSubject(this.index)
-      .pipe(takeUntil(this.destroy$)) // Ensures subscription is auto-unsubscribed when `destroy$` emits
-      .subscribe({
-        next: (value) => {
-          this.value = value[1] as string; // Updates the element's value
-          this.key = value[0] as number; // Updates the element's key
-        },
-        error: (error) => {
-          console.error('Error =', error); // Logs errors in subscription
-        },
-      });
 
-    this.dataService.selectedBoxIndex$.subscribe((index) => {
-      this.selectedIndex = index; // Updates the selected index
+  private subscribeToBoxUpdates(): void {
+    const boxUpdates$ = this.dataService
+      .getBoxSubject(this.index)
+      .pipe(takeUntil(this.destroy$));
+
+    const selectedIndexUpdates$ = this.dataService.selectedBoxIndex$.pipe(
+      takeUntil(this.destroy$)
+    );
+
+    merge(boxUpdates$, selectedIndexUpdates$).subscribe({
+      next: (update) => {
+        if (Array.isArray(update)) {
+          this.handleBoxValueUpdate(update); // Update key-value pair
+        } else {
+          this.selectedIndex = update as number; // Update selected index
+        }
+      },
+      error: (err) => console.error('Error =', err),
     });
+  }
+
+  /**
+   * Updates the key and value properties based on the incoming box values
+   * @param boxValue - Array containing key-value pair (number, string)
+   */
+  private handleBoxValueUpdate(boxValue: Array<string | number>): void {
+    this.value = boxValue[1] as string;
+    this.key = boxValue[0] as number;
   }
 }

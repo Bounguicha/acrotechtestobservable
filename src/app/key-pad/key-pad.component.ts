@@ -39,7 +39,7 @@ export class KeyPadComponent implements OnChanges {
    * value based on the data service's `boxValuesSumMap`.
    * @param changes - Tracks the previous and current state of the bound input properties.
    */
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.clickedButton = this.dataService.boxValuesSumMap.get(this.index)
       ? this.dataService.boxValuesSumMap.get(this.index)![0] as number
       : 0;
