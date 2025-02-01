@@ -6,7 +6,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class DataService {
 
-  // BehaviorSubject to manage the selected box index. Initialized with `null`.
+  // BehaviorSubject to manage the selected box index.
   private _selectedBoxIndex = new BehaviorSubject<number | null>(null);
 
   // Observable to expose the selected box index as a stream.
@@ -18,8 +18,8 @@ export class DataService {
   // Map to store values and sums for each box.
   private _boxSums = new Map<number, Array<string | number>>();
 
-  // List of boxes initialized as an array of 10 empty objects.
-  private _boxList = Array.from({ length: 10 }, () => ({}));
+  // List of boxes.
+  private _boxList = Array(10);
 
   /**
    * Getter for the list of boxes.

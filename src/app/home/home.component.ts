@@ -24,7 +24,6 @@ export class HomeComponent implements AfterViewInit {
   constructor(public dataService: DataService, private cdr: ChangeDetectorRef) {}
 
   /**
-   * Angular lifecycle hook triggered after the view is initialized.
    * Retrieves stored box data from `localStorage` and updates the data service.
    */
   ngAfterViewInit(): void {
@@ -57,10 +56,9 @@ export class HomeComponent implements AfterViewInit {
    * @returns The total sum as a number.
    */
   public calculateTotalSum(): number {
-    // Aggregates the first element of each value in the boxValuesSumMap into a total sum
     return [...this.dataService.boxValuesSumMap.values()].reduce(
-      (acc, value) => acc + (value[0] as number), // Adds the first value (as number) to the accumulator
-      0 // Initial accumulator value
+      (acc, value) => acc + (value[0] as number),
+      0
     );
   }
 }

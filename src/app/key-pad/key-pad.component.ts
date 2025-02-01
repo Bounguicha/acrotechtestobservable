@@ -20,7 +20,7 @@ import {NgStyle} from "@angular/common";
 })
 export class KeyPadComponent implements OnChanges {
 
-  // Holds the button configuration mapped by categories and IDs
+  // Map that contains all the buttons
   protected buttonList: Map<BUTTON_CATEGORIES, Map<number, string>> = BUTTON_CATEGORIES_MAP;
 
   // Array containing all button categories
@@ -54,7 +54,7 @@ export class KeyPadComponent implements OnChanges {
     this.dataService.selectedBoxIndex$
       .pipe(first()) // Ensures the observable completes after the first emission
       .subscribe((index) => {
-        if (index !== null) { // Proceeds only if a valid index is selected
+        if (index !== null) {
           this.dataService.updateBoxValue(index, keyButton); // Updates the selected box's value
           this.dataService.selectBox(index + 1); // Moves to the next box
         }
