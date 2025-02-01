@@ -61,7 +61,6 @@ export class DataService {
    * @param index - Index of the box to be selected.
    */
   public selectBox(index: number): void {
-    console.log(index);
     if (index < this._boxList.length) {
       this._selectedBoxIndex.next(index);
     }
@@ -98,7 +97,6 @@ export class DataService {
     const boxSubject = this.getBoxSubject(index);
     boxSubject.next(value);
 
-    console.log(boxSubject);
 
     // Updates `_boxSums` and persists the data if the key (first array element) is a number.
     if (typeof value[0] === 'number') {
