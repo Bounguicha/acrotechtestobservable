@@ -1,7 +1,7 @@
 <div class="flex flex-row">
   <div class="flex flex-column" style="width: 90%">
     <div class="flex flex-row" style="width: 100%">
-      @for (_ of dataService.boxes || []; track $index) {
+      @for (_ of dataService.boxes; track $index) {
         <app-clickable-box [index]="$index"/>
       }
     </div>
