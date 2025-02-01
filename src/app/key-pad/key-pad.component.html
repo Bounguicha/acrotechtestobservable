@@ -1,0 +1,16 @@
+<div class="flex flex-row justify-evenly" style="width: 100%;"  >
+  @for (category of buttonCategories; track category) {
+    <div class="flex flex-column " style="border: 2px solid black; padding: 20px; width: 28%" >
+      <span style="padding: 10px; font-weight: bold" class="flex justify-center">{{category}}</span>
+      <div class="flex flex-wrap justify-center">
+        @for (button of buttonList.get(category)?.entries(); track button[0]) {
+          <button mat-flat-button [id]="button[0]" [ngStyle]="{'background-color': button[0] === clickedButton ? 'red' : 'green'}" style="margin: 2px" (click)="onButtonClick(button)">{{button[1]}}</button>
+        }
+      </div>
+      </div>
+
+
+  }
+</div>
+
+
